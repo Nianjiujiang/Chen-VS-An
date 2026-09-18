@@ -188,6 +188,7 @@ cvs.addEventListener('pointerdown', e => {
     if (hitCircle(p, uiBtn.focus)){ touchState.focus = !touchState.focus; return; }
     touchState.active = true; touchState.id = e.pointerId;
     touchState.ox = p.x; touchState.oy = p.y; touchState.dx = 0; touchState.dy = 0;
+    if (player){ player.tx = player.x; player.ty = player.y; }
   }
 }, true);
 cvs.addEventListener('pointermove', e => {
@@ -258,7 +259,8 @@ function newPlayer(){
   return {
     x: W / 2, y: H - 90, vx: 0, vy: 0, r: 15, hitR: 3.4,
     focus: false, graze: 0, hits: 0, invuln: 1.2,
-    shotT: 0, slashCd: 0, bombCd: 0, respawn: 0, trail: [], t: 0
+    shotT: 0, slashCd: 0, bombCd: 0, respawn: 0, trail: [], t: 0,
+    tx: W / 2, ty: H - 90
   };
 }
 function keepInBounds(){
