@@ -1596,8 +1596,9 @@ function loop(ts){
   lastTS = ts;
   if (!(dt > 0)) dt = 1 / 60;
   dt = Math.min(dt, 1 / 25);
-  if (G.scene === 'fight' && !G.paused) updateFight(dt);
-  else { updateFx(dt); }
+  if (G.scene === 'fight'){
+    if (!G.paused) updateFight(dt);
+  } else { updateFx(dt); }
   draw();
 }
 loadArt();
