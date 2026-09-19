@@ -135,6 +135,7 @@ window.addEventListener('keydown', e => {
   const k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
   keys[k] = true;
   if (k === ' ' || k.startsWith('Arrow')) e.preventDefault();
+  if (e.repeat) return;
   Sfx.init(); Sfx.resume();
   if (k === ' ' || k === 'j') doSlash();
   if (k === 'e' || k === 'k') doBomb();
