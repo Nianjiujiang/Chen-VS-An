@@ -934,15 +934,15 @@ function drawBullets(){
     const b = ebullets[i];
     const s = b.r * 3.4;
     if (b.type === 'rice'){
-      const c = Math.cos(b.rot), sn = Math.sin(b.rot), k = 2.1;
-      ctx.setTransform(DPR * c * k, DPR * sn * k, -DPR * sn, DPR * c, b.x * DPR, b.y * DPR);
+      ctx.save();
+      ctx.translate(b.x, b.y); ctx.rotate(b.rot); ctx.scale(2.1, 1);
       ctx.drawImage(glowSprite(b.col), -s, -s, s * 2, s * 2);
+      ctx.restore();
     } else {
       ctx.drawImage(glowSprite(b.col), b.x - s, b.y - s, s * 2, s * 2);
       if (b.type === 'heavy') ctx.drawImage(glowSprite(b.col, 'ring'), b.x - s * 1.7, b.y - s * 1.7, s * 3.4, s * 3.4);
     }
   }
-  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
   ctx.globalCompositeOperation = 'source-over';
 }
 function drawShots(){
