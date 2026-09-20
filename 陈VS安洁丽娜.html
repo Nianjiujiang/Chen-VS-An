@@ -135,6 +135,7 @@ window.addEventListener('keydown', e => {
   const k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
   keys[k] = true;
   if (k === ' ' || k.startsWith('Arrow')) e.preventDefault();
+  if (e.repeat) return;
   Sfx.init(); Sfx.resume();
   if (k === ' ' || k === 'j') doSlash();
   if (k === 'e' || k === 'k') doBomb();
@@ -934,15 +935,15 @@ function drawBullets(){
     const b = ebullets[i];
     const s = b.r * 3.4;
     if (b.type === 'rice'){
-      const c = Math.cos(b.rot), sn = Math.sin(b.rot), k = 2.1;
-      ctx.setTransform(DPR * c * k, DPR * sn * k, -DPR * sn, DPR * c, b.x * DPR, b.y * DPR);
+      ctx.save();
+      ctx.translate(b.x, b.y); ctx.rotate(b.rot); ctx.scale(2.1, 1);
       ctx.drawImage(glowSprite(b.col), -s, -s, s * 2, s * 2);
+      ctx.restore();
     } else {
       ctx.drawImage(glowSprite(b.col), b.x - s, b.y - s, s * 2, s * 2);
       if (b.type === 'heavy') ctx.drawImage(glowSprite(b.col, 'ring'), b.x - s * 1.7, b.y - s * 1.7, s * 3.4, s * 3.4);
     }
   }
-  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
   ctx.globalCompositeOperation = 'source-over';
 }
 function drawShots(){
@@ -1436,7 +1437,7 @@ function drawArtScene(){
   artSlots = [];
   const list = [
     { k:'chen', label:'陈', x: W / 2 - S - gap / 2 },
-    { k:'angel', label:'安洁莉娜', x: W / 2 + gap / 2 }
+    { k:'angel', label:'安洁丽娜', x: W / 2 + gap / 2 }
   ];
   for (const s of list){
     const r = { x: s.x, y, w: S, h: S };
@@ -1595,8 +1596,9 @@ function loop(ts){
   lastTS = ts;
   if (!(dt > 0)) dt = 1 / 60;
   dt = Math.min(dt, 1 / 25);
-  if (G.scene === 'fight' && !G.paused) updateFight(dt);
-  else { updateFx(dt); }
+  if (G.scene === 'fight'){
+    if (!G.paused) updateFight(dt);
+  } else { updateFx(dt); }
   draw();
 }
 loadArt();
